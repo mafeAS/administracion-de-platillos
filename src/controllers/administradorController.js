@@ -58,7 +58,7 @@ controller.newdata=(req,res)=>{
     const{id}=req.params
     const newAdministrador=req.body
     req.getConnection((err,conn)=>{
-        conn.query('UPDATE administradordeplatos set ?',[newAdministrador,id],(err,rows)=>{
+        conn.query('UPDATE administradordeplatos set ? WHERE id=?',[newAdministrador,id],(err,rows)=>{
             res.redirect('/')
         })
     })

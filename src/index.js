@@ -4,8 +4,7 @@ const app=express()
 const path=require('path')
 const mysql=require('mysql')
 const myconnection=require('express-myconnection')
-
-
+require('dotenv').config(); 
 //----------importando rutas-------------------------------
 const administradorRouter=require('./routes/administrador')
 
@@ -16,14 +15,18 @@ app.set('views', path.join(__dirname,'views'))
 
 //---------MIDDLEWARES: son funciones que se ejecutan antes de que vengan las peticiones de los usuarios------------
 app.set(morgan('dev'))
-app.use(myconnection(mysql,{
-    host:'localhost',
-    user:'root',
-    password:'20001219',
+const connection=app.use(myconnection(mysql,{
+    host:process.env.HOST,
+    user:process.env.USER_DB,
+    password:process.env.PASSWORD_DB,
     port:3306,
-    database:'administradordeplatos'
+    database:process.env.DATABASE
 
 },'single'))
+connection.connect(function (err){
+    if(err)throw err;
+    console.log("conectao")
+  })
 app.use(express.urlencoded({extended:false}))
 
 //-------------router----------------------------------------------------------
